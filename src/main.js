@@ -3,8 +3,11 @@ function fetchRepos(username) {
         .then((response) => response.json())
         .then((data) => {
             const repoList = document.querySelector('.repo-list');
+            const profileName = document.querySelector('#profile');
 
             data.forEach((repo) => {
+                profileName.textContent = repo.owner.login;
+
                 const cardHTML = `
                     <article class="repo-card">
                         <h3 class="repo-card__name">${repo.name}</h3>
@@ -14,7 +17,6 @@ function fetchRepos(username) {
 
                 repoList.insertAdjacentHTML('beforeend', cardHTML);
             });
-            console.log(data);
         });
 }
 
