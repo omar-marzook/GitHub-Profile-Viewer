@@ -20,7 +20,32 @@ body {
     padding: 0 20px;
 }
 
-.repo-grid {
+.username-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.input-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s linear;
+}
+
+.input-btn:hover {
+    background-color: #0056b3;
+}
+
+.repo-list {
     display: grid;
     /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
     grid-template-columns: repeat(3, 1fr);
@@ -39,7 +64,7 @@ body {
     gap: 16px;
 }
 
-.repo-card__title {
+.repo-card__name {
     margin-top: 0;
     font-size: 1.5rem;
 }
@@ -47,4 +72,22 @@ body {
 .repo-card__paragraph {
     margin-top: 0;
     font-size: 1rem;
+}
+
+.repo-card__btn {
+    align-self: flex-start;
+    margin-top: auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s linear;
+}
+
+.repo-card__btn:hover {
+    background-color: #0056b3;
 }
