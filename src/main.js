@@ -1,9 +1,10 @@
+const repoList = document.querySelector('.repo-list');
+const profileName = document.querySelector('#profile');
+
 function fetchRepos(username) {
     fetch(`https://api.github.com/users/${username}/repos`)
         .then((response) => response.json())
         .then((data) => {
-            const repoList = document.querySelector('.repo-list');
-            const profileName = document.querySelector('#profile');
 
             data.forEach((repo) => {
                 profileName.textContent = repo.owner.login;
@@ -18,13 +19,15 @@ function fetchRepos(username) {
                 repoList.insertAdjacentHTML('beforeend', cardHTML);
             });
         })
-        .catch(error)=> {
+        .catch((error) => {
             alert(error);
-        }
+        });
 }
 
 const searchBtn = document.querySelector('#getRepos');
+
 searchBtn.addEventListener('click', () => {
-    let username = document.querySelector('#username').value;
+    repoList.innerHTML = '';
+    const username = document.querySelector('#username').value;
     fetchRepos(username);
 });
