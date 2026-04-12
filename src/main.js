@@ -4,24 +4,26 @@ const profileName = document.querySelector('#profile');
 function fetchRepos(username) {
     fetch(`https://api.github.com/users/${username}/repos`)
         .then((response) => response.json())
+
         .then((data) => {
+            if (data != false) {
+                data.forEach((repo) => {
+                    profileName.innerHTML = repo.owner.login;
 
-            data.forEach((repo) => {
-                profileName.textContent = repo.owner.login;
-
-                const cardHTML = `
+                    const cardHTML = `
                     <article class="repo-card">
                         <h3 class="repo-card__name">${repo.name}</h3>
                         <a class="repo-card__btn" href="${repo.html_url}" target="_blank" rel="noopener noreferrer">View Repository</a>
                     </article>
                 `;
 
-                repoList.insertAdjacentHTML('beforeend', cardHTML);
-            });
+                    repoList.insertAdjacentHTML('beforeend', cardHTML);
+                });
+            } else {
+                profileName.innerHTML = '<span style="color: red">User not found!</span>';
+            }
         })
-        .catch((error) => {
-            alert(error);
-        });
+        .catch((error) => alert(error));
 }
 
 const searchBtn = document.querySelector('#getRepos');
