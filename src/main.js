@@ -20,10 +20,14 @@ function fetchRepos(username) {
                     repoList.insertAdjacentHTML('beforeend', cardHTML);
                 });
             } else {
-                profileName.innerHTML = '<span style="color: red">User not found!</span>';
+                profileName.innerHTML =
+                    '<span style="color: red">User not found!</span>';
             }
         })
-        .catch((error) => alert(error));
+        .catch((error) => {
+            console.error('Error fetching repositories:', error);
+            alert(error);
+        })
 }
 
 const searchBtn = document.querySelector('#getRepos');
