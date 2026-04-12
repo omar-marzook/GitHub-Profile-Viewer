@@ -17,7 +17,10 @@ function fetchRepos(username) {
 
                 repoList.insertAdjacentHTML('beforeend', cardHTML);
             });
-        });
+        })
+        .catch(error)=> {
+            alert(error);
+        }
 }
 
 const searchBtn = document.querySelector('#getRepos');
