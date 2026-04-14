@@ -1,7 +1,11 @@
+const loader = document.getElementById('loading');
 const repoList = document.querySelector('.repo-list');
 const profileName = document.querySelector('#profile');
 
 async function fetchRepos(username) {
+        loader.style.display = 'block';
+        repoList.style.display = 'none';
+
     try {
         const response = await fetch(
             `https://api.github.com/users/${username}/repos`,
@@ -18,6 +22,9 @@ async function fetchRepos(username) {
         handleFetchData(data);
     } catch (error) {
         profileName.innerHTML = `<span style="color: red">${error.message}</span>`;
+    } finally {
+        loader.style.display = 'none';
+        repoList.style.display = 'grid';
     }
 }
 

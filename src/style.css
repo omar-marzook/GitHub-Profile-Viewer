@@ -15,6 +15,10 @@ body {
     padding-bottom: 40px;
 }
 
+.mt-60 {
+    margin-top: 60px;
+}
+
 .container {
     max-width: 1320px;
     margin: 0 auto;
@@ -125,4 +129,27 @@ body {
 
 .repo-card__btn:hover {
     background-color: #0056b3;
+}
+
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #007bff;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
