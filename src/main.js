@@ -35,6 +35,12 @@ const handleFetchData = (data) => {
             const cardHTML = `
                 <article class="repo-card">
                     <h3 class="repo-card__name">${repo.name}</h3>
+                    <section class="repo-card__details">
+                    <p class="repo-card__date">created date: ${repo.created_at.toString().split('T')[0]}</p>
+                    <p class="repo-card__stars">${repo.stargazers_count} 🌟 stars</p>
+                    <p class="repo-card__private">${repo.visibility} visibility</p>
+                    <p class="repo-card__lang">${repo.language || 'Not specified'}</p>
+                    </section>
                     <a class="repo-card__btn" href="${repo.html_url}" target="_blank" rel="noopener noreferrer">View Repository</a>
                 </article>
             `;
