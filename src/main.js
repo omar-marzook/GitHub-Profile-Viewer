@@ -26,7 +26,8 @@ function fetchRepos(username) {
         })
         .catch((error) => {
             console.error('Error fetching repositories:', error);
-            alert(error);
+            profileName.innerHTML =
+                '<span style="color: red">Request failed!</span>';
         })
 }
 
