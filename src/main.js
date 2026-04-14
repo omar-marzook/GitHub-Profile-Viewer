@@ -3,8 +3,8 @@ const repoList = document.querySelector('.repo-list');
 const profileName = document.querySelector('#profile');
 
 async function fetchRepos(username) {
-        loader.style.display = 'block';
-        repoList.style.display = 'none';
+    loader.style.display = 'block';
+    repoList.style.display = 'none';
 
     try {
         const response = await fetch(
@@ -46,10 +46,18 @@ const handleFetchData = (data) => {
     }
 };
 
+const usernameInput = document.querySelector('#username');
 const searchBtn = document.querySelector('#getRepos');
+
+usernameInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        searchBtn.click();
+    }
+});
 
 searchBtn.addEventListener('click', () => {
     repoList.innerHTML = '';
-    const username = document.querySelector('#username').value;
+    const username = usernameInput.value;
     fetchRepos(username);
 });
