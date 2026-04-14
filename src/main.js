@@ -1,35 +1,43 @@
 const repoList = document.querySelector('.repo-list');
 const profileName = document.querySelector('#profile');
 
-function fetchRepos(username) {
-    fetch(`https://api.github.com/users/${username}/repos`)
-        .then((response) => response.json())
+async function fetchRepos(username) {
+    try {
+        const response = await fetch(
+            `https://api.github.com/users/${username}/repos`,
+        );
 
-        .then((data) => {
-            if (data != false) {
-                data.forEach((repo) => {
-                    profileName.innerHTML = repo.owner.login;
+        if (!response.ok) {
+            const message =
+                response.status === 404 ? 'User not found!' : 'Request failed!';
+            throw new Error(message);
+        }
 
-                    const cardHTML = `
-                    <article class="repo-card">
-                        <h3 class="repo-card__name">${repo.name}</h3>
-                        <a class="repo-card__btn" href="${repo.html_url}" target="_blank" rel="noopener noreferrer">View Repository</a>
-                    </article>
-                `;
+        const data = await response.json();
 
-                    repoList.insertAdjacentHTML('beforeend', cardHTML);
-                });
-            } else {
-                profileName.innerHTML =
-                    '<span style="color: red">User not found!</span>';
-            }
-        })
-        .catch((error) => {
-            console.error('Error fetching repositories:', error);
-            profileName.innerHTML =
-                '<span style="color: red">Request failed!</span>';
-        })
+        handleFetchData(data);
+    } catch (error) {
+        profileName.innerHTML = `<span style="color: red">${error.message}</span>`;
+    }
 }
+
+const handleFetchData = (data) => {
+    if (data != false) {
+        data.forEach((repo) => {
+            profileName.innerHTML = repo.owner.login;
+            const cardHTML = `
+                <article class="repo-card">
+                    <h3 class="repo-card__name">${repo.name}</h3>
+                    <a class="repo-card__btn" href="${repo.html_url}" target="_blank" rel="noopener noreferrer">View Repository</a>
+                </article>
+            `;
+            repoList.insertAdjacentHTML('beforeend', cardHTML);
+        });
+    } else {
+        profileName.innerHTML =
+            '<span style="color: red">User not found!</span>';
+    }
+};
 
 const searchBtn = document.querySelector('#getRepos');
 
