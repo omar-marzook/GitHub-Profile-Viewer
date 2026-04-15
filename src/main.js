@@ -121,8 +121,8 @@ langSelect.addEventListener('change', () => {
     }
 });
 
-// Stars Sorting
-/* It should have three options
+/* Stars Sorting
+ * It should have three options
  * Not sorted
  * Sorted by stars in ascending order
  * Sorted by stars in descending order
@@ -152,4 +152,37 @@ const sortByStars = () => {
 
 starsSelect.addEventListener('change', () => {
     sortByStars();
+});
+
+/* Date Sorting
+ * It should have three options
+ * Not sorted
+ * Sorted by Date in ascending order
+ * Sorted by Date in descending order
+ */
+const dateSelect = document.querySelector('#date-sort');
+
+const sortByDate = () => {
+    const selectedDateSort = dateSelect.value;
+
+    if (selectedDateSort === 'asc') {
+        const sortedReposAsc = [...filteredRepos].sort(
+            (a, b) => new Date(a.updated_at) - new Date(b.updated_at),
+        );
+        clearCardsList();
+        implementCards(sortedReposAsc);
+    } else if (selectedDateSort === 'dsc') {
+        const sortedReposDsc = [...filteredRepos].sort(
+            (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
+        );
+        clearCardsList();
+        implementCards(sortedReposDsc);
+    } else {
+        clearCardsList();
+        implementCards(filteredRepos);
+    }
+};
+
+dateSelect.addEventListener('change', () => {
+    sortByDate();
 });
