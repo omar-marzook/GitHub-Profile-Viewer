@@ -16,8 +16,32 @@
             <input class="username-input" type="text" id="username" placeholder="Enter GitHub username">
             <button class="input-btn" id="getRepos">View Repositories</button>
         </section>
+
         <h2 class="profile-name" id="profile"></h2>
     </section>
+
+    <aside class="container sort-filter">
+        <div class="filter-wrapper">
+            <label for="language-filter">Filter by Language</label>
+            <select id="language-filter">
+                <option value="all">All</option>
+            </select>
+        </div>
+
+        <div class="filter-wrapper">
+            <label for="stars-sort">Sort by Stars</label>
+            <select id="stars-sort">
+                <option value="all">All</option>
+            </select>
+        </div>
+
+        <div class="filter-wrapper">
+            <label for="date-sort">Sort by updated date</label>
+            <select id="date-sort">
+                <option value="all">All</option>
+            </select>
+        </div>
+    </aside>
 
     <div class="container mt-60">
         <div id="loading" class="loader" style="display:none;"></div>
