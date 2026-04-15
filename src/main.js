@@ -76,6 +76,9 @@ searchBtn.addEventListener('click', () => {
     fetchGitHubAPI(username);
 });
 
+// Language Filter
+const langSelect = document.querySelector('#language-filter');
+
 const getLanguages = (data) => {
     const langsArray = data
         .map((repo) => repo.language)
@@ -85,8 +88,6 @@ const getLanguages = (data) => {
 
     return languages;
 };
-
-const langSelect = document.querySelector('#language-filter');
 
 const addLangsToFilter = (data) => {
     const languages = getLanguages(data);
@@ -116,4 +117,37 @@ langSelect.addEventListener('change', () => {
         clearCardsList();
         implementCards(allReposData);
     }
+});
+
+// Stars Sorting
+/* It should have three options
+ * Not sorted
+ * Sorted by stars in ascending order
+ * Sorted by stars in descending order
+ */
+const starsSelect = document.querySelector('#stars-sort');
+
+const sortByStars = () => {
+    const selectedStarsSort = starsSelect.value;
+
+    if (selectedStarsSort === 'asc') {
+        const sortedReposAsc = [...allReposData].sort(
+            (a, b) => a.stargazers_count - b.stargazers_count,
+        );
+        clearCardsList();
+        implementCards(sortedReposAsc);
+    } else if (selectedStarsSort === 'dsc') {
+        const sortedReposDsc = [...allReposData].sort(
+            (a, b) => b.stargazers_count - a.stargazers_count,
+        );
+        clearCardsList();
+        implementCards(sortedReposDsc);
+    } else {
+        clearCardsList();
+        implementCards(allReposData);
+    }
+};
+
+starsSelect.addEventListener('change', () => {
+    sortByStars();
 });
