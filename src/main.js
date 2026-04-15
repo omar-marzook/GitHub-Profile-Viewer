@@ -2,6 +2,7 @@ const loader = document.getElementById('loading');
 const repoList = document.querySelector('.repo-list');
 const profileName = document.querySelector('#profile');
 const allReposData = [];
+let filteredRepos = [];
 
 async function fetchGitHubAPI(username) {
     loader.style.display = 'block';
@@ -24,6 +25,7 @@ async function fetchGitHubAPI(username) {
 
         handleData(allReposData);
         addLangsToFilter(allReposData);
+        filteredRepos.push(...allReposData);
     } catch (error) {
         profileName.innerHTML = `<span style="color: red">${error.message}</span>`;
     } finally {
@@ -103,9 +105,9 @@ const addLangsToFilter = (data) => {
 const filterLanguage = () => {
     const selectedLang = langSelect.value;
 
-    const filteredRepos = allReposData.filter(
-        (repo) => repo.language === selectedLang,
-    );
+    const repos = allReposData.filter((repo) => repo.language === selectedLang);
+    filteredRepos.length = 0;
+    filteredRepos.push(...repos);
     clearCardsList();
     implementCards(filteredRepos);
 };
@@ -131,20 +133,20 @@ const sortByStars = () => {
     const selectedStarsSort = starsSelect.value;
 
     if (selectedStarsSort === 'asc') {
-        const sortedReposAsc = [...allReposData].sort(
+        const sortedReposAsc = [...filteredRepos].sort(
             (a, b) => a.stargazers_count - b.stargazers_count,
         );
         clearCardsList();
         implementCards(sortedReposAsc);
     } else if (selectedStarsSort === 'dsc') {
-        const sortedReposDsc = [...allReposData].sort(
+        const sortedReposDsc = [...filteredRepos].sort(
             (a, b) => b.stargazers_count - a.stargazers_count,
         );
         clearCardsList();
         implementCards(sortedReposDsc);
     } else {
         clearCardsList();
-        implementCards(allReposData);
+        implementCards(filteredRepos);
     }
 };
 
