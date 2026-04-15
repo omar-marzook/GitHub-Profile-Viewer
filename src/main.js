@@ -30,8 +30,9 @@ async function fetchRepos(username) {
 
 const handleFetchData = (data) => {
     if (data != false) {
+        profileName.innerHTML = data[0].owner.login;
+
         data.forEach((repo) => {
-            profileName.innerHTML = repo.owner.login;
             const cardHTML = `
                 <article class="repo-card">
                     <h3 class="repo-card__name">${repo.name}</h3>
