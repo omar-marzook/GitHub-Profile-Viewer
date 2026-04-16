@@ -81,15 +81,11 @@ searchBtn.addEventListener('click', () => {
 // Language Filter
 const langSelect = document.querySelector('#language-filter');
 
-const getLanguages = (data) => {
-    const langsArray = data
-        .map((repo) => repo.language)
-        .filter((lang) => lang !== null);
-
-    const languages = new Set(langsArray);
-
-    return languages;
-};
+const getLanguages = (data) =>
+    data.reduce((langs, repo) => {
+        if (repo.language) langs.add(repo.language);
+        return langs;
+    }, new Set());
 
 const addLangsToFilter = (data) => {
     const languages = getLanguages(data);
