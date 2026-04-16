@@ -7,6 +7,9 @@ let filteredRepos = [];
 async function fetchGitHubAPI(username) {
     loader.style.display = 'block';
     repoList.style.display = 'none';
+    allReposData.length = 0;
+    filteredRepos.length = 0;
+    langSelect.innerHTML = '<option value="all">All Languages</option>';
 
     try {
         const response = await fetch(
