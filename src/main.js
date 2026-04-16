@@ -35,7 +35,7 @@ async function fetchGitHubAPI(username) {
 }
 
 const handleData = (data) => {
-    profileName.innerHTML = data[0].owner.login;
+    profileName.innerHTML = data[0]?.owner?.login ?? 'Unknown user';
     implementCards(data);
 };
 
@@ -46,10 +46,10 @@ const implementCards = (data) => {
                 <article class="repo-card">
                     <h3 class="repo-card__name">${repo.name}</h3>
                     <section class="repo-card__details">
-                    <p class="repo-card__date">Updated date: ${repo.updated_at.toString().split('T')[0]}</p>
+                    <p class="repo-card__date">Updated date: ${repo.updated_at?.split('T')[0] ?? 'N/A'}</p>
                     <p class="repo-card__stars">${repo.stargazers_count} 🌟 stars</p>
                     <p class="repo-card__private">${repo.visibility} visibility</p>
-                    <p class="repo-card__lang">${repo.language || 'Not specified'}</p>
+                    <p class="repo-card__lang">${repo.language ?? 'Not specified'}</p>
                     </section>
                     <a class="repo-card__btn" href="${repo.html_url}" target="_blank" rel="noopener noreferrer">View Repository</a>
                 </article>
