@@ -155,6 +155,9 @@ const sortByStars = () => {
 };
 
 starsSelect.addEventListener('change', () => {
+    // reset the other sorting
+    dateSelect.value = 'none';
+
     sortByStars();
 });
 
@@ -188,5 +191,8 @@ const sortByDate = () => {
 };
 
 dateSelect.addEventListener('change', () => {
+    // reset the other sorting
+    starsSelect.value = 'none';
+
     sortByDate();
 });
