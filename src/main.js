@@ -38,7 +38,11 @@ async function fetchGitHubAPI(username) {
 }
 
 const handleData = (data) => {
-    profileName.innerHTML = data[0]?.owner?.login ?? 'Unknown user';
+    if (!data.length) {
+        profileName.textContent = 'No public repositories found.';
+        return;
+    }
+    profileName.textContent = data[0]?.owner?.login ?? 'Unknown';
     implementCards(data);
 };
 
