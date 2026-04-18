@@ -80,8 +80,9 @@ userNameInput.addEventListener('keydown', (e) => {
 });
 
 searchBtn.addEventListener('click', () => {
+    const username = userNameInput.value.trim();
+    if (!username) return;
     repoList.innerHTML = '';
-    const username = userNameInput.value;
     fetchGitHubAPI(username);
 });
 
