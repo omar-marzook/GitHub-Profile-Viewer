@@ -171,12 +171,57 @@ body {
     }
 }
 
+.stats-filter-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    margin-top: 60px;
+}
+
+@media (min-width: 992px) {
+    .stats-filter-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.stats {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.langs-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.langs-list li {
+    border-radius: 10px;
+    padding: 4px 8px;
+    background: #fff;
+}
+
 .sort-filter {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
     align-items: center;
+    flex-wrap: wrap;
     gap: 20px;
+}
+
+@media (min-width: 992px) {
+    .sort-filter {
+        justify-content: flex-end;
+    }
 }
 
 .sort-filter label {
@@ -188,7 +233,7 @@ body {
     padding: 10px;
     border-radius: 10px;
     border: 1px solid #ccc;
-    width: 100%;;
+    width: 100%;
 }
 
 .filter-wrapper {

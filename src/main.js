@@ -27,6 +27,7 @@ async function fetchGitHubAPI(username) {
         allReposData.push(...data);
 
         handleData(allReposData);
+        renderStats();
         addLangsToFilter(allReposData);
         filteredRepos.push(...allReposData);
     } catch (error) {
@@ -54,7 +55,7 @@ const implementCards = (data) => {
                     <h3 class="repo-card__name">${repo.name}</h3>
                     <section class="repo-card__details">
                     <p class="repo-card__date">Updated date: ${repo.updated_at?.split('T')[0] ?? 'N/A'}</p>
-                    <p class="repo-card__stars">${repo.stargazers_count} 🌟 stars</p>
+                    <p class="repo-card__stars">${repo.stargazers_count} ⭐ stars</p>
                     <p class="repo-card__private">${repo.visibility} visibility</p>
                     <p class="repo-card__lang">${repo.language ?? 'Not specified'}</p>
                     </section>
@@ -85,6 +86,40 @@ searchBtn.addEventListener('click', () => {
     repoList.innerHTML = '';
     fetchGitHubAPI(username);
 });
+
+// Stats Summary
+const getStats = (data) =>
+    data.reduce(
+        (acc, repo) => ({
+            totalRepos: acc.totalRepos + 1,
+            totalStars: acc.totalStars + (repo.stargazers_count ?? 0),
+            langCounts: repo.language
+                ? {
+                      ...acc.langCounts,
+                      [repo.language]: (acc.langCounts[repo.language] ?? 0) + 1,
+                  }
+                : acc.langCounts,
+        }),
+        { totalRepos: 0, totalStars: 0, langCounts: {} },
+    );
+
+const renderStats = () => {
+    const stats = getStats(allReposData);
+
+    const repoCountEl = document.querySelector('#repo-count');
+    const starsCountEl = document.querySelector('#stars-count');
+    const langsCountEl = document.querySelector('#langs-count');
+    const langsListEl = document.querySelector('.langs-list');
+
+    repoCountEl.textContent = stats.totalRepos;
+    starsCountEl.textContent = stats.totalStars;
+    langsCountEl.textContent = Object.keys(stats.langCounts).length;
+
+    Object.entries(stats.langCounts).forEach(([lang, count]) => {
+        const langItem = `<li>${lang}: ${count}</li>`;
+        langsListEl.insertAdjacentHTML('beforeend', langItem);
+    });
+};
 
 // Language Filter
 const langSelect = document.querySelector('#language-filter');
