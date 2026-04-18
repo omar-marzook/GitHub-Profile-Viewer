@@ -106,93 +106,44 @@ const addLangsToFilter = (data) => {
     });
 };
 
-const filterLanguage = () => {
-    const selectedLang = langSelect.value;
+const starsSelect = document.querySelector('#stars-sort');
+const dateSelect = document.querySelector('#date-sort');
 
-    const repos = allReposData.filter((repo) => repo.language === selectedLang);
-    filteredRepos.length = 0;
-    filteredRepos.push(...repos);
+const applyFiltersAndSort = () => {
+    let result = [...filteredRepos];
+
+    const starVal = starsSelect.value;
+    if (starVal === 'asc') {
+        result.sort((a, b) => a.stargazers_count - b.stargazers_count);
+    } else if (starVal === 'dsc') {
+        result.sort((a, b) => b.stargazers_count - a.stargazers_count);
+    }
+
+    const dateVal = dateSelect.value;
+    if (dateVal === 'asc') {
+        result.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
+    } else if (dateVal === 'dsc') {
+        result.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+    }
+
     clearCardsList();
-    implementCards(filteredRepos);
+    implementCards(result);
 };
+
+starsSelect.addEventListener('change', applyFiltersAndSort);
+dateSelect.addEventListener('change', applyFiltersAndSort);
 
 langSelect.addEventListener('change', () => {
     if (langSelect.value !== 'all') {
-        filterLanguage();
+        filteredRepos.length = 0;
+        filteredRepos.push(
+            ...allReposData.filter(
+                (repo) => repo.language === langSelect.value,
+            ),
+        );
     } else {
-        clearCardsList();
-        implementCards(allReposData);
+        filteredRepos.length = 0;
+        filteredRepos.push(...allReposData);
     }
-});
-
-/* Stars Sorting
- * It should have three options
- * Not sorted
- * Sorted by stars in ascending order
- * Sorted by stars in descending order
- */
-const starsSelect = document.querySelector('#stars-sort');
-
-const sortByStars = () => {
-    const selectedStarsSort = starsSelect.value;
-
-    if (selectedStarsSort === 'asc') {
-        const sortedReposAsc = [...filteredRepos].sort(
-            (a, b) => a.stargazers_count - b.stargazers_count,
-        );
-        clearCardsList();
-        implementCards(sortedReposAsc);
-    } else if (selectedStarsSort === 'dsc') {
-        const sortedReposDsc = [...filteredRepos].sort(
-            (a, b) => b.stargazers_count - a.stargazers_count,
-        );
-        clearCardsList();
-        implementCards(sortedReposDsc);
-    } else {
-        clearCardsList();
-        implementCards(filteredRepos);
-    }
-};
-
-starsSelect.addEventListener('change', () => {
-    // reset the other sorting
-    dateSelect.value = 'none';
-
-    sortByStars();
-});
-
-/* Date Sorting
- * It should have three options
- * Not sorted
- * Sorted by Date in ascending order
- * Sorted by Date in descending order
- */
-const dateSelect = document.querySelector('#date-sort');
-
-const sortByDate = () => {
-    const selectedDateSort = dateSelect.value;
-
-    if (selectedDateSort === 'asc') {
-        const sortedReposAsc = [...filteredRepos].sort(
-            (a, b) => new Date(a.updated_at) - new Date(b.updated_at),
-        );
-        clearCardsList();
-        implementCards(sortedReposAsc);
-    } else if (selectedDateSort === 'dsc') {
-        const sortedReposDsc = [...filteredRepos].sort(
-            (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
-        );
-        clearCardsList();
-        implementCards(sortedReposDsc);
-    } else {
-        clearCardsList();
-        implementCards(filteredRepos);
-    }
-};
-
-dateSelect.addEventListener('change', () => {
-    // reset the other sorting
-    starsSelect.value = 'none';
-
-    sortByDate();
+    applyFiltersAndSort();
 });
