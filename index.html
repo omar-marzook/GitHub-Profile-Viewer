@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Profile Viewer</title>
+    <link rel="stylesheet" href="./src/style.css">
+</head>
+
+<body>
+
+    <section class="container">
+        <h1>GitHub Profile Viewer</h1>
+        <section class="input-wrapper">
+            <input class="username-input" type="text" id="username" placeholder="Enter GitHub username">
+            <button class="input-btn" id="getRepos">View Repositories</button>
+        </section>
+
+        <button id="getBookmarksBtn" class="show-bookmarks-btn">Show Bookmarks in Yellow</button>
+
+        <h2 class="profile-name" id="profile"></h2>
+    </section>
+
+    <section class="container stats-filter-wrapper">
+
+        <div class="stats">
+            <h4 class="total-repos">Total Repositories: <span id="repo-count">0</span></h4>
+            <h4 class="total-repos">Total Stars: <span id="stars-count">0</span></h4>
+            <div>
+                <h4 class="total-langs">Total Languages: <span id="langs-count">0</span></h4>
+                <ul class="langs-list"></ul>
+            </div>
+
+        </div>
+
+        <div class="sort-filter">
+            <div class="filter-wrapper">
+                <label for="language-filter">Filter by Language</label>
+                <select id="language-filter">
+                    <option value="all">All</option>
+                </select>
+            </div>
+
+            <div class="filter-wrapper">
+                <label for="stars-sort">Sort by Stars</label>
+                <select id="stars-sort">
+                    <option value="">None</option>
+                    <option value="asc">Ascending</option>
+                    <option value="dsc">Descending</option>
+                </select>
+            </div>
+
+            <div class="filter-wrapper">
+                <label for="date-sort">Sort by Updated Date</label>
+                <select id="date-sort">
+                    <option value="">None</option>
+                    <option value="asc">Ascending</option>
+                    <option value="dsc">Descending</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <div class="container mt-60">
+        <div id="loading" class="loader" style="display:none;"></div>
+        <section class="repo-list">
+        </section>
+    </div>
+    <script type="module" src="./src/main.js"></script>
+</body>
+
+</html>
