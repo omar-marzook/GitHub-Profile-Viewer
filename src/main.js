@@ -1,28 +1,20 @@
+import { fetchRepos } from './api.js';
+
 const loader = document.getElementById('loading');
 const repoList = document.querySelector('.repo-list');
 const profileName = document.querySelector('#profile');
 const allReposData = [];
 let filteredRepos = [];
 
-async function fetchGitHubAPI(username) {
+const loadRepos = async (username) => {
     loader.style.display = 'block';
     repoList.style.display = 'none';
     allReposData.length = 0;
     filteredRepos.length = 0;
-    langSelect.innerHTML = '<option value="all">All Languages</option>';
+    langSelect.innerHTML = '<option value="all">All</option>';
 
     try {
-        const response = await fetch(
-            `https://api.github.com/users/${username}/repos`,
-        );
-
-        if (!response.ok) {
-            const message =
-                response.status === 404 ? 'User not found!' : 'Request failed!';
-            throw new Error(message);
-        }
-
-        const data = await response.json();
+        const data = await fetchRepos(username);
 
         allReposData.push(...data);
 
@@ -85,7 +77,7 @@ searchBtn.addEventListener('click', () => {
     const username = userNameInput.value.trim();
     if (!username) return;
     repoList.innerHTML = '';
-    fetchGitHubAPI(username);
+    loadRepos(username);
 });
 
 // Stats Summary
