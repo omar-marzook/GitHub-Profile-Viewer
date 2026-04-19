@@ -9,8 +9,9 @@ import {
     renderError,
     renderFilter,
     repoList,
+    renderBookmarks,
 } from './render.js';
-import { showBookmarks, storeBookmark } from './storage.js';
+import { getBookmarks, storeBookmark } from './storage.js';
 
 const allReposData = [];
 let filteredRepos = [];
@@ -99,15 +100,17 @@ langSelect.addEventListener('change', () => {
 });
 
 // Bookmarking Repositories
-const showBookmarksBtn = document.querySelector('#showBookmarksBtn');
+const getBookmarksBtn = document.querySelector('#getBookmarksBtn');
 
 repoList.addEventListener('click', (e) => {
     if (e.target.classList.contains('repo-card__bookmark')) {
         const repoCard = e.target.closest('.repo-card');
         repoCard.classList.add('repo-card--bookmarked');
         const repoId = repoCard.dataset.id;
-        storeBookmark('bookmarkedRepos', repoId);
+        storeBookmark(repoId);
     }
 });
 
-showBookmarksBtn.addEventListener('click', showBookmarks);
+getBookmarksBtn.addEventListener('click', () => {
+    renderBookmarks(getBookmarks());
+});

@@ -4,23 +4,16 @@
  * Using Event delegation to handle bookmarks
  */
 
-export const storeBookmark = (key, newBookmark) => {
-    let savedBookmarks = JSON.parse(localStorage.getItem(key)) || [];
+const repoBookmarkKey = 'bookmarkedRepos';
+
+export const storeBookmark = (newBookmark) => {
+    let savedBookmarks =
+        JSON.parse(localStorage.getItem(repoBookmarkKey)) || [];
 
     savedBookmarks.push(newBookmark);
 
-    localStorage.setItem(key, JSON.stringify(savedBookmarks));
+    localStorage.setItem(repoBookmarkKey, JSON.stringify(savedBookmarks));
 };
 
-export const showBookmarks = () => {
-    let savedBookmarks =
-        JSON.parse(localStorage.getItem('bookmarkedRepos')) || [];
-
-    const repoCards = document.querySelectorAll('.repo-card');
-
-    repoCards.forEach((card) => {
-        if (savedBookmarks.includes(card.dataset.id)) {
-            card.classList.add('repo-card--bookmarked');
-        }
-    });
-};
+export const getBookmarks = () =>
+    JSON.parse(localStorage.getItem(repoBookmarkKey)) || [];

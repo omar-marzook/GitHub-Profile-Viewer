@@ -83,7 +83,6 @@ export const renderStats = (data) => {
     });
 };
 
-
 // Language Filter
 const langSelect = document.querySelector('#language-filter');
 
@@ -101,5 +100,16 @@ export const renderFilter = (data) => {
         option.value = lang;
         option.textContent = lang;
         langSelect.appendChild(option);
+    });
+};
+
+// Render Bookmarks
+export const renderBookmarks = (bookmarks) => {
+    const repoCards = document.querySelectorAll('.repo-card');
+
+    repoCards.forEach((card) => {
+        if (bookmarks.includes(card.dataset.id)) {
+            card.classList.add('repo-card--bookmarked');
+        }
     });
 };
