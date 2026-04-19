@@ -54,7 +54,7 @@ body {
     padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
-    border: none;
+    border: 1px solid #007bff;
     border-radius: 10px;
     cursor: pointer;
     font-size: 1rem;
@@ -63,6 +63,25 @@ body {
 
 .input-btn:hover {
     background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.show-bookmarks-btn {
+    padding: 10px 20px;
+    background-color: yellow;
+    color: #000;
+    border: 1px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s linear;
+    margin-top: 20px;
+}
+
+.show-bookmarks-btn:hover {
+    background-color: #000;
+    border-color: yellow;
+    color: yellow;
 }
 
 .profile-name {
@@ -103,6 +122,10 @@ body {
     gap: 16px;
 }
 
+.repo-card--bookmarked {
+    border:2px solid yellow;
+}
+
 .repo-card__name {
     margin-top: 0;
     font-size: 1.5rem;
@@ -131,14 +154,13 @@ body {
     background-color: #0056b3;
 }
 
-
 .repo-card__bookmark {
     align-self: flex-start;
     margin-top: auto;
     padding: 10px 20px;
     background-color: yellow;
     color: #000;
-    border: none;
+    border: 1px solid #000;
     border-radius: 10px;
     cursor: pointer;
     text-decoration: none;

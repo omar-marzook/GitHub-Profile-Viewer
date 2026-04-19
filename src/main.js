@@ -201,8 +201,28 @@ const pushToLocalStorage = (key, newBookmark) => {
 repoList.addEventListener('click', (e) => {
     if (e.target.classList.contains('repo-card__bookmark')) {
         const repoCard = e.target.closest('.repo-card');
+        repoCard.classList.add('repo-card--bookmarked');
         const repoId = repoCard.dataset.id;
         pushToLocalStorage('bookmarkedRepos', repoId);
     }
 });
 
+const showBookmarks = () => {
+    let savedBookmarks =
+        JSON.parse(localStorage.getItem('bookmarkedRepos')) || [];
+    console.log(savedBookmarks);
+
+    const repoCards = document.querySelectorAll('.repo-card');
+
+    repoCards.forEach((card) => {
+        if (savedBookmarks.includes(card.dataset.id)) {
+            card.classList.add('repo-card--bookmarked');
+            console.log(true);
+        }
+        console.log(card);
+    });
+};
+
+const showBookmarksBtn = document.querySelector('#showBookmarksBtn');
+
+showBookmarksBtn.addEventListener('click', showBookmarks);
