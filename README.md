@@ -72,3 +72,22 @@ A clean, lightweight web application that interfaces with the **GitHub REST API*
 ---
 
 ## 📁 Project Structure
+```
+github-profile-viewer/
+├── index.html
+├── main.js          # App state, event listeners, orchestration
+├── api.js           # GitHub API fetch logic
+├── render.js        # All DOM manipulation and rendering
+├── storage.js       # localStorage read/write for bookmarks
+├── style.css
+├── vite.config.js
+└── package.json
+```
+
+---
+
+## ☁️ Vercel
+
+This project is deployed on Vercel. 
+Link: https://git-hub-profile-viewer-silk.vercel.app/
+
