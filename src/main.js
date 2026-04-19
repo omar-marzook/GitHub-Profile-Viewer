@@ -51,7 +51,7 @@ const handleData = (data) => {
 const implementCards = (data) => {
     data.forEach((repo) => {
         const cardHTML = `
-                <article class="repo-card">
+                <article class="repo-card" data-id="${repo.id}">
                     <h3 class="repo-card__name">${repo.name}</h3>
                     <section class="repo-card__details">
                     <p class="repo-card__date">Updated date: ${repo.updated_at?.split('T')[0] ?? 'N/A'}</p>
@@ -60,6 +60,7 @@ const implementCards = (data) => {
                     <p class="repo-card__lang">${repo.language ?? 'Not specified'}</p>
                     </section>
                     <a class="repo-card__btn" href="${repo.html_url}" target="_blank" rel="noopener noreferrer">View Repository</a>
+                    <button class="repo-card__bookmark">Bookmark</button>
                 </article>
             `;
         repoList.insertAdjacentHTML('beforeend', cardHTML);
@@ -182,3 +183,26 @@ langSelect.addEventListener('change', () => {
     }
     applyFiltersAndSort();
 });
+
+/* Bookmark Repositories
+ * It will save the bookmarked repos in localhost storage as JSON
+ * There will be a tab to show the bookmarked repos
+ * Using Event delegation to handle bookmarks
+ */
+
+const pushToLocalStorage = (key, newBookmark) => {
+    let savedBookmarks = JSON.parse(localStorage.getItem(key)) || [];
+
+    savedBookmarks.push(newBookmark);
+
+    localStorage.setItem(key, JSON.stringify(savedBookmarks));
+};
+
+repoList.addEventListener('click', (e) => {
+    if (e.target.classList.contains('repo-card__bookmark')) {
+        const repoCard = e.target.closest('.repo-card');
+        const repoId = repoCard.dataset.id;
+        pushToLocalStorage('bookmarkedRepos', repoId);
+    }
+});
+
