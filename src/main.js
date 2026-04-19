@@ -1,14 +1,20 @@
 import { fetchRepos } from './api.js';
+import {
+    handleData,
+    implementCards,
+    clearCardsList,
+    renderStats,
+    showLoader,
+    hideLoader,
+    renderError,
+    renderFilter,
+} from './render.js';
 
-const loader = document.getElementById('loading');
-const repoList = document.querySelector('.repo-list');
-const profileName = document.querySelector('#profile');
 const allReposData = [];
 let filteredRepos = [];
 
 const loadRepos = async (username) => {
-    loader.style.display = 'block';
-    repoList.style.display = 'none';
+    showLoader();
     allReposData.length = 0;
     filteredRepos.length = 0;
     langSelect.innerHTML = '<option value="all">All</option>';
@@ -17,50 +23,16 @@ const loadRepos = async (username) => {
         const data = await fetchRepos(username);
 
         allReposData.push(...data);
+        filteredRepos.push(...allReposData);
 
         handleData(allReposData);
-        renderStats();
-        addLangsToFilter(allReposData);
-        filteredRepos.push(...allReposData);
+        renderStats(allReposData);
+        renderFilter(allReposData);
     } catch (error) {
-        profileName.innerHTML = `<span style="color: red">${error.message}</span>`;
+        renderError(error);
     } finally {
-        loader.style.display = 'none';
-        repoList.style.display = 'grid';
+        hideLoader();
     }
-}
-
-const handleData = (data) => {
-    if (!data.length) {
-        profileName.textContent = 'No public repositories found.';
-        return;
-    }
-    profileName.textContent = data[0]?.owner?.login ?? 'Unknown';
-    implementCards(data);
-};
-
-// Handle DOM
-const implementCards = (data) => {
-    data.forEach((repo) => {
-        const cardHTML = `
-                <article class="repo-card" data-id="${repo.id}">
-                    <h3 class="repo-card__name">${repo.name}</h3>
-                    <section class="repo-card__details">
-                    <p class="repo-card__date">Updated date: ${repo.updated_at?.split('T')[0] ?? 'N/A'}</p>
-                    <p class="repo-card__stars">${repo.stargazers_count} ⭐ stars</p>
-                    <p class="repo-card__private">${repo.visibility} visibility</p>
-                    <p class="repo-card__lang">${repo.language ?? 'Not specified'}</p>
-                    </section>
-                    <a class="repo-card__btn" href="${repo.html_url}" target="_blank" rel="noopener noreferrer">View Repository</a>
-                    <button class="repo-card__bookmark">Bookmark</button>
-                </article>
-            `;
-        repoList.insertAdjacentHTML('beforeend', cardHTML);
-    });
-};
-
-const clearCardsList = () => {
-    repoList.innerHTML = '';
 };
 
 const userNameInput = document.querySelector('#username');
@@ -76,63 +48,29 @@ userNameInput.addEventListener('keydown', (e) => {
 searchBtn.addEventListener('click', () => {
     const username = userNameInput.value.trim();
     if (!username) return;
-    repoList.innerHTML = '';
+    clearCardsList();
     loadRepos(username);
 });
-
-// Stats Summary
-const getStats = (data) =>
-    data.reduce(
-        (acc, repo) => ({
-            totalRepos: acc.totalRepos + 1,
-            totalStars: acc.totalStars + (repo.stargazers_count ?? 0),
-            langCounts: repo.language
-                ? {
-                      ...acc.langCounts,
-                      [repo.language]: (acc.langCounts[repo.language] ?? 0) + 1,
-                  }
-                : acc.langCounts,
-        }),
-        { totalRepos: 0, totalStars: 0, langCounts: {} },
-    );
-
-const renderStats = () => {
-    const stats = getStats(allReposData);
-
-    const repoCountEl = document.querySelector('#repo-count');
-    const starsCountEl = document.querySelector('#stars-count');
-    const langsCountEl = document.querySelector('#langs-count');
-    const langsListEl = document.querySelector('.langs-list');
-
-    repoCountEl.textContent = stats.totalRepos;
-    starsCountEl.textContent = stats.totalStars;
-    langsCountEl.textContent = Object.keys(stats.langCounts).length;
-
-    Object.entries(stats.langCounts).forEach(([lang, count]) => {
-        const langItem = `<li>${lang}: ${count}</li>`;
-        langsListEl.insertAdjacentHTML('beforeend', langItem);
-    });
-};
 
 // Language Filter
 const langSelect = document.querySelector('#language-filter');
 
-const getLanguages = (data) =>
-    data.reduce((langs, repo) => {
-        if (repo.language) langs.add(repo.language);
-        return langs;
-    }, new Set());
+// const getLanguages = (data) =>
+//     data.reduce((langs, repo) => {
+//         if (repo.language) langs.add(repo.language);
+//         return langs;
+//     }, new Set());
 
-const addLangsToFilter = (data) => {
-    const languages = getLanguages(data);
+// const renderFilter = (data) => {
+//     const languages = getLanguages(data);
 
-    languages.forEach((lang) => {
-        const option = document.createElement('option');
-        option.value = lang;
-        option.textContent = lang;
-        langSelect.appendChild(option);
-    });
-};
+//     languages.forEach((lang) => {
+//         const option = document.createElement('option');
+//         option.value = lang;
+//         option.textContent = lang;
+//         langSelect.appendChild(option);
+//     });
+// };
 
 const starsSelect = document.querySelector('#stars-sort');
 const dateSelect = document.querySelector('#date-sort');
@@ -175,43 +113,3 @@ langSelect.addEventListener('change', () => {
     }
     applyFiltersAndSort();
 });
-
-/* Bookmark Repositories
- * It will save the bookmarked repos in localhost storage as JSON
- * There will be a tab to show the bookmarked repos
- * Using Event delegation to handle bookmarks
- */
-
-const pushToLocalStorage = (key, newBookmark) => {
-    let savedBookmarks = JSON.parse(localStorage.getItem(key)) || [];
-
-    savedBookmarks.push(newBookmark);
-
-    localStorage.setItem(key, JSON.stringify(savedBookmarks));
-};
-
-repoList.addEventListener('click', (e) => {
-    if (e.target.classList.contains('repo-card__bookmark')) {
-        const repoCard = e.target.closest('.repo-card');
-        repoCard.classList.add('repo-card--bookmarked');
-        const repoId = repoCard.dataset.id;
-        pushToLocalStorage('bookmarkedRepos', repoId);
-    }
-});
-
-const showBookmarks = () => {
-    let savedBookmarks =
-        JSON.parse(localStorage.getItem('bookmarkedRepos')) || [];
-
-    const repoCards = document.querySelectorAll('.repo-card');
-
-    repoCards.forEach((card) => {
-        if (savedBookmarks.includes(card.dataset.id)) {
-            card.classList.add('repo-card--bookmarked');
-        }
-    });
-};
-
-const showBookmarksBtn = document.querySelector('#showBookmarksBtn');
-
-showBookmarksBtn.addEventListener('click', showBookmarks);
