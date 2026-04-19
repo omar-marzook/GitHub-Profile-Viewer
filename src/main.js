@@ -210,16 +210,13 @@ repoList.addEventListener('click', (e) => {
 const showBookmarks = () => {
     let savedBookmarks =
         JSON.parse(localStorage.getItem('bookmarkedRepos')) || [];
-    console.log(savedBookmarks);
 
     const repoCards = document.querySelectorAll('.repo-card');
 
     repoCards.forEach((card) => {
         if (savedBookmarks.includes(card.dataset.id)) {
             card.classList.add('repo-card--bookmarked');
-            console.log(true);
         }
-        console.log(card);
     });
 };
 
