@@ -15,12 +15,14 @@ import { getBookmarks, storeBookmark } from './storage.js';
 
 const allReposData = [];
 let filteredRepos = [];
+let bookmarksVisible = false;
 
 const loadRepos = async (username) => {
     showLoader();
     allReposData.length = 0;
     filteredRepos.length = 0;
     langSelect.innerHTML = '<option value="all">All</option>';
+    bookmarksVisible = false;
 
     try {
         const data = await fetchRepos(username);
@@ -79,6 +81,7 @@ const applyFiltersAndSort = () => {
 
     clearCardsList();
     implementCards(result);
+    if(bookmarksVisible) renderBookmarks(getBookmarks());
 };
 
 starsSelect.addEventListener('change', applyFiltersAndSort);
@@ -112,5 +115,6 @@ repoList.addEventListener('click', (e) => {
 });
 
 getBookmarksBtn.addEventListener('click', () => {
+    bookmarksVisible = true;
     renderBookmarks(getBookmarks());
 });
