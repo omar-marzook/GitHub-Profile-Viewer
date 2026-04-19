@@ -8,7 +8,9 @@ import {
     hideLoader,
     renderError,
     renderFilter,
+    repoList,
 } from './render.js';
+import { showBookmarks, storeBookmark } from './storage.js';
 
 const allReposData = [];
 let filteredRepos = [];
@@ -54,24 +56,6 @@ searchBtn.addEventListener('click', () => {
 
 // Language Filter
 const langSelect = document.querySelector('#language-filter');
-
-// const getLanguages = (data) =>
-//     data.reduce((langs, repo) => {
-//         if (repo.language) langs.add(repo.language);
-//         return langs;
-//     }, new Set());
-
-// const renderFilter = (data) => {
-//     const languages = getLanguages(data);
-
-//     languages.forEach((lang) => {
-//         const option = document.createElement('option');
-//         option.value = lang;
-//         option.textContent = lang;
-//         langSelect.appendChild(option);
-//     });
-// };
-
 const starsSelect = document.querySelector('#stars-sort');
 const dateSelect = document.querySelector('#date-sort');
 
@@ -113,3 +97,17 @@ langSelect.addEventListener('change', () => {
     }
     applyFiltersAndSort();
 });
+
+// Bookmarking Repositories
+const showBookmarksBtn = document.querySelector('#showBookmarksBtn');
+
+repoList.addEventListener('click', (e) => {
+    if (e.target.classList.contains('repo-card__bookmark')) {
+        const repoCard = e.target.closest('.repo-card');
+        repoCard.classList.add('repo-card--bookmarked');
+        const repoId = repoCard.dataset.id;
+        storeBookmark('bookmarkedRepos', repoId);
+    }
+});
+
+showBookmarksBtn.addEventListener('click', showBookmarks);

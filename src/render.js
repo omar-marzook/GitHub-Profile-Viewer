@@ -1,5 +1,5 @@
 const loader = document.getElementById('loading');
-const repoList = document.querySelector('.repo-list');
+export const repoList = document.querySelector('.repo-list');
 const profileName = document.querySelector('#profile');
 
 export const showLoader = () => {
