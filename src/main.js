@@ -90,14 +90,14 @@ dateSelect.addEventListener('change', applyFiltersAndSort);
 langSelect.addEventListener('change', () => {
     if (langSelect.value !== 'all') {
         filteredRepos.length = 0;
-        filteredRepos.push(
+        filteredRepos = [
             ...allReposData.filter(
                 (repo) => repo.language === langSelect.value,
             ),
-        );
+        ];
     } else {
         filteredRepos.length = 0;
-        filteredRepos.push(...allReposData);
+        filteredRepos = [...allReposData];
     }
     applyFiltersAndSort();
 });
